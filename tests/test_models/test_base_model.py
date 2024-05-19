@@ -28,6 +28,19 @@ class TestBaseModel(unittest.TestCase):
         """Check if updated_at date is a datetime object"""
         self.assertIsInstance(self.baseModel.updated_at, datetime)
 
+    def test_to_dict_type(self):
+        """Check the return type of to_dict function"""
+        base_dict = self.base.to_dict()
+        self.assertIsInstance(base_dict, dict)
+
+    def test_to_dict_keys(self):
+        """Check if dict has the correct keys"""
+        base_dict = self.base.to_dict()
+        self.assertIn("id", base_dict)
+        self.assertIn("__class__", base_dict)
+        self.assertIn("created_at", base_dict)
+        self.assertIn("updated_at", base_dict)
+
     def test_save_updates(self):
         """Check if save function changes update date"""
         old_date = self.baseModel.updated_at
