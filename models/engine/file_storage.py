@@ -1,9 +1,10 @@
 #!/usr/bin/python3
 """
-The FileStorage class
+Module for the FileStorage class which takes care of storing objects as json
 """
 import json
-
+import os
+from models.base_model import BaseModel
 
 class FileStorage:
     """A class dedicated to saving instances as JSON files"""
@@ -16,26 +17,26 @@ class FileStorage:
 
     def new(self, obj):
         """Sets new object"""
-        self.__class__.__objects[
+        self.__objects[
             f"{obj.__class__.__name__}.{obj.id}"] = obj
 
     def save(self):
         """Serializes dictionary of objects and saves it to file"""
         new_dict = {}
-        for key, value in self.__class__.__objects.items():
+        for key, value in self.__objects.items():
             new_dict[key] = value.to_dict()
-        objects_json = json.dumps(new_dict)
-        with open(self.__class__.__file_path, 'w', encoding="utf-8") as f:
-            f.write(objects_json)
+        with open(self.__file_path, 'w', encoding="utf-8") as f:
+            json.dump(new_dict, f)
 
     def reload(self):
         """Deserializes JSON file to objects"""
-        try:
-            with open(self.__class__.__file_path, 'r', encoding="utf-8") as f:
-                dict_contents = json.load(f)
-                for key, value in dict_contents.items():
-                    self.__class__.__objects[key] \
-                        = eval(value['__class__'])(**value)
+        if os.path.exists(self.__file_path):
+            try:
+                with open(self.__file_path, 'r', encoding="utf-8") as f:
+                    dict_contents = json.load(f)
+                    for key, value in dict_contents.items():
+                        self.__objects[key] \
+                            = eval(value['__class__'])(**value)
 
-        except FileNotFoundError:
-            return
+            except FileNotFoundError:
+                pass
