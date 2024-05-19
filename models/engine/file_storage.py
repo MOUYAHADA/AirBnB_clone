@@ -6,6 +6,7 @@ import json
 import os
 from models.base_model import BaseModel
 
+
 class FileStorage:
     """A class dedicated to saving instances as JSON files"""
     __file_path = 'file.json'
