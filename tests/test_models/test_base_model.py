@@ -8,6 +8,7 @@ from datetime import datetime
 class TestBaseModel(unittest.TestCase):
     """Class for testing the BaseModel class"""
     def setUp(self):
+        """Setup BaseModel instance object for testing"""
         self.baseModel = BaseModel()
 
     def test_id_is_string(self):
@@ -30,12 +31,12 @@ class TestBaseModel(unittest.TestCase):
 
     def test_to_dict_type(self):
         """Check the return type of to_dict function"""
-        base_dict = self.base.to_dict()
+        base_dict = self.baseModel.to_dict()
         self.assertIsInstance(base_dict, dict)
 
     def test_to_dict_keys(self):
         """Check if dict has the correct keys"""
-        base_dict = self.base.to_dict()
+        base_dict = self.baseModel.to_dict()
         self.assertIn("id", base_dict)
         self.assertIn("__class__", base_dict)
         self.assertIn("created_at", base_dict)
@@ -55,6 +56,7 @@ class TestBaseModel(unittest.TestCase):
                                          self.baseModel.__dict__),)
 
     def tearDown(self):
+        """Delete the BaseModel instance"""
         del self.baseModel
 
 
