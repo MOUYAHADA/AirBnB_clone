@@ -3,6 +3,7 @@
 This is a module for the BaseModel class
 --> it defines all common attributes/methods for other classes
 """
+import models
 from uuid import uuid4
 from datetime import datetime
 
@@ -10,11 +11,18 @@ from datetime import datetime
 class BaseModel:
     """The base class"""
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         """Creates an instance of this class"""
-        self.id = str(uuid4())
-        self.created_at = datetime.now()
-        self.updated_at = datetime.now()
+        if kwargs:
+            for key, value in kwargs.items():
+                if key in ('created_at', 'updated_at'):
+                    setattr(self, key, datetime.fromisoformat(value))
+                elif key != '__class__':
+                    setattr(self, key, value)
+        else:
+            self.id = str(uuid4())
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
 
     def __str__(self):
         """Returns the informal string representation of this instance"""

@@ -55,6 +55,26 @@ class TestBaseModel(unittest.TestCase):
             "[BaseModel] ({}) {}".format(self.baseModel.id,
                                          self.baseModel.__dict__),)
 
+    def test_kwargs(self):
+        """Test BaseModel creation from kwargs"""
+        base_dict = self.baseModel.to_dict()
+        new_baseModel = BaseModel(**base_dict)
+        self.assertEqual(new_baseModel.id, self.baseModel.id)
+        self.assertEqual(new_baseModel.created_at, self.baseModel.created_at)
+        self.assertEqual(new_baseModel.updated_at, self.baseModel.updated_at)
+
+    def test_kwargs_new(self):
+        """Test instantiating BaseModel from kwargs with id"""
+
+        baseModel = BaseModel()
+        base_dict = baseModel.to_dict()
+
+        new_baseModel = BaseModel(**base_dict)
+        self.assertEqual(new_baseModel.id, baseModel.id)
+
+        self.assertEqual(new_baseModel.created_at, baseModel.created_at)
+        self.assertEqual(new_baseModel.updated_at, baseModel.updated_at)
+
     def tearDown(self):
         """Delete the BaseModel instance"""
         del self.baseModel
